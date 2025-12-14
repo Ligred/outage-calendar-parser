@@ -89,14 +89,14 @@ This job handles the actual parsing and syncing.
 **Build the Docker Image:**
 
 ```bash
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/light-bot
+gcloud builds submit --region=us-central1 --tag us-central1-docker.pkg.dev/YOUR_PROJECT_ID/my-repo/light-bot
 ```
 
 **Create the Job:**
 
 ```bash
 gcloud run jobs create light-bot-job \
-  --image gcr.io/YOUR_PROJECT_ID/light-bot \
+  --image us-central1-docker.pkg.dev/YOUR_PROJECT_ID/my-repo/light-bot \
   --region us-central1 \
   --memory 512Mi \
   --max-retries 0 \
@@ -116,7 +116,7 @@ gcloud scheduler jobs create http light-scheduler \
   --oauth-service-account-email "YOUR_COMPUTE_SERVICE_ACCOUNT_EMAIL"
 ```
 
-### 2\. Deploy the Telegram Trigger (Cloud Function)
+### 2\. Deploy the Telegram Trigger (Cloud Function).  Not implemented yet
 
 This function listens for `/update` from Telegram and manually starts the Cloud Run Job.
 
