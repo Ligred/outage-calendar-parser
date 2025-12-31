@@ -130,6 +130,8 @@ def process_html_schedule(service, html_content, date_obj):
         print(f"   ⚠️ Інфо про групу {TARGET_GROUP} не знайдено (календар на цей день очищено).")
 
 def create_calendar_event(service, date_obj, start_time, end_time):
+    if end_time == "24:00":
+        end_time = "23:59"
     date_str = date_obj.strftime("%Y-%m-%d")
     start_iso = f"{date_str}T{start_time}:00"
     end_iso = f"{date_str}T{end_time}:00"
