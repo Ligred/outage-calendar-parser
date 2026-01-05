@@ -2,6 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, time
+from zoneinfo import ZoneInfo
 
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -28,8 +29,10 @@ def clear_events_for_date(service, date_obj):
     Видаляє всі події бота за вказану дату, щоб уникнути дублікатів 
     або застарілих даних.
     """
-    start_of_day = datetime.combine(date_obj, time.min).isoformat() + 'Z'
-    end_of_day = datetime.combine(date_obj, time.max).isoformat() + 'Z'
+    tz = ZoneInfo("Europe/Kyiv")
+
+    start_of_day = datetime.combine(date_obj, time.min, tzinfo=tz).isoformat()
+    end_of_day = datetime.combine(date_obj, time.max, tzinfo=tz).isoformat()
 
     print(f"   🧹 Очищення старих записів на {date_obj}...")
     
@@ -37,7 +40,9 @@ def clear_events_for_date(service, date_obj):
         calendarId=CALENDAR_ID, 
         timeMin=start_of_day, 
         timeMax=end_of_day, 
-        singleEvents=True
+        singleEvents=True,
+        timeZone="Europe/Kiev",
+        orderBy="startTime"
     ).execute()
     
     events = events_result.get('items', [])
